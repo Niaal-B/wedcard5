@@ -4,6 +4,7 @@ type YTPlayer = {
   playVideo: () => void;
   pauseVideo: () => void;
   seekTo: (seconds: number, allowSeekAhead: boolean) => void;
+  mute: () => void;
   unMute: () => void;
   setVolume: (volume: number) => void;
   destroy: () => void;
@@ -48,7 +49,8 @@ function loadYouTubeApi(): Promise<void> {
 }
 
 export function useYouTubePlayer(elementId: string, videoId: string, startSeconds: number) {
-  const [playing, setPlaying] = useState(false);
+  const [muted, setMuted] = useState(true);
+  const [ready, setReady] = useState(false);
   const playerRef = useRef<YTPlayer | null>(null);
 
   useEffect(() => {
@@ -61,10 +63,16 @@ export function useYouTubePlayer(elementId: string, videoId: string, startSecond
         videoId,
         playerVars: {
           start: startSeconds,
-          autoplay: 0,
           controls: 0,
           disablekb: 1,
           playsinline: 1
+        },
+        events: {
+          onReady: (event) => {
+            event.target.mute();
+            event.target.playVideo();
+            setReady(true);
+          }
         }
       });
     });
@@ -76,21 +84,37 @@ export function useYouTubePlayer(elementId: string, videoId: string, startSecond
     };
   }, [elementId, videoId, startSeconds]);
 
-  function toggle() {
+  function unmute() {
+    const player = playerRef.current;
+    if (!player) return;
+    player.unMute();
+    player.setVolume(70);
+    setMuted(false);
+  }
+
+  function toggleMute() {
     const player = playerRef.current;
     if (!player) return;
 
-    if (playing) {
-      player.pauseVideo();
-      setPlaying(false);
+    if (muted) {
+      unmute();
     } else {
-      player.seekTo(startSeconds, true);
-      player.unMute();
-      player.setVolume(70);
-      player.playVideo();
-      setPlaying(true);
+      player.mute();
+      setMuted(true);
     }
   }
 
-  return { playing, toggle, hasTrack: Boolean(videoId) };
+  useEffect(() => {
+    if (!ready || !muted) return;
+
+    function handleFirstScroll() {
+      unmute();
+    }
+
+    window.addEventListener('scroll', handleFirstScroll, { once: true, passive: true });
+    return () => window.removeEventListener('scroll', handleFirstScroll);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ready, muted]);
+
+  return { muted, toggleMute, hasTrack: Boolean(videoId) };
 }
