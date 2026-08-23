@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { InstagramIcon } from 'lucide-react';
 import { couple } from '../data/wedding';
 
 export function ThankYou() {
@@ -68,6 +69,14 @@ export function Footer() {
       <p className="mt-6 font-body text-[10px] font-light tracking-[0.2em] text-cream/40">
         Made with love · Kuttikkattor, Kerala
       </p>
+      <a
+        href="https://www.instagram.com/weddingbell.connect/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-4 inline-flex items-center gap-2 font-body text-[10px] uppercase tracking-[0.2em] text-gold-light/70 transition-colors duration-150 ease-out hover:text-gold-light focus:outline-none focus-visible:ring-2 focus-visible:ring-gold">
+        <InstagramIcon className="h-3.5 w-3.5" aria-hidden="true" />
+        @weddingbell.connect
+      </a>
     </footer>);
 
 }
