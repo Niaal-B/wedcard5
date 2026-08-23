@@ -1,8 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ImageIcon, MapPinIcon, MoonStarIcon } from 'lucide-react';
+import { MapPinIcon, MoonStarIcon } from 'lucide-react';
 import { SectionHeading } from './Ornament';
 import { couple, type Person } from '../data/wedding';
+
+const COUPLE_PHOTO = '/couplepic.jpeg';
 
 function PersonCard({ person }: {person: Person;}) {
   return (
@@ -62,18 +64,11 @@ export function CoupleSection() {
 
         <figure className="mt-12 flex flex-col items-center">
           <div className="w-full max-w-xs rounded-md border border-gold/40 bg-cream-deep/90 p-2 shadow-[0_18px_50px_rgba(0,0,0,0.28)]">
-            <div className="flex aspect-[4/5] w-full flex-col items-center justify-center gap-3 rounded-sm border border-dashed border-emerald-deep/25 bg-cream-soft">
-              <ImageIcon
-                className="h-8 w-8 text-emerald-deep/35"
-                aria-hidden="true" />
-              
-              <p className="font-body text-[10px] uppercase tracking-[0.25em] text-emerald-deep/45">
-                Couple Photo
-              </p>
-              <p className="font-body text-[10px] font-light text-ink/40">
-                Placeholder
-              </p>
-            </div>
+            <img
+              src={COUPLE_PHOTO}
+              alt={`${couple.groom.shortName} and ${couple.bride.shortName}`}
+              className="aspect-[3/4] w-full rounded-sm object-cover" />
+
           </div>
           <figcaption className="mt-5 font-script text-2xl text-gold-light">
             {couple.groom.shortName} &amp; {couple.bride.shortName}
