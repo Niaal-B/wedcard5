@@ -5,7 +5,7 @@ import { SectionHeading } from './Ornament';
 import { Butterflies } from './Butterflies';
 import { couple, type Person } from '../data/wedding';
 
-const COUPLE_PHOTO = '/couplepic.jpeg';
+const COUPLE_PHOTO = '/couplepic.png';
 
 function PersonCard({ person }: {person: Person;}) {
   return (
