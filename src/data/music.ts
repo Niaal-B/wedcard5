@@ -4,6 +4,6 @@ export type MusicConfig = {
 };
 
 export const musicConfig: MusicConfig = {
-  youtubeId: '',
+  youtubeId: 'Xv7LRKsCejk',
   startSeconds: 0
 };
