@@ -4,7 +4,6 @@ type YTPlayer = {
   playVideo: () => void;
   pauseVideo: () => void;
   seekTo: (seconds: number, allowSeekAhead: boolean) => void;
-  mute: () => void;
   unMute: () => void;
   setVolume: (volume: number) => void;
   destroy: () => void;
@@ -18,9 +17,6 @@ declare global {
         options: {
           videoId: string;
           playerVars?: Record<string, number | string>;
-          events?: {
-            onReady?: (event: { target: YTPlayer }) => void;
-          };
         }
       ) => YTPlayer;
     };
@@ -49,9 +45,9 @@ function loadYouTubeApi(): Promise<void> {
 }
 
 export function useYouTubePlayer(elementId: string, videoId: string, startSeconds: number) {
-  const [muted, setMuted] = useState(true);
-  const [ready, setReady] = useState(false);
+  const [playing, setPlaying] = useState(false);
   const playerRef = useRef<YTPlayer | null>(null);
+  const playingRef = useRef(false);
 
   useEffect(() => {
     if (!videoId) return;
@@ -66,13 +62,6 @@ export function useYouTubePlayer(elementId: string, videoId: string, startSecond
           controls: 0,
           disablekb: 1,
           playsinline: 1
-        },
-        events: {
-          onReady: (event) => {
-            event.target.mute();
-            event.target.playVideo();
-            setReady(true);
-          }
         }
       });
     });
@@ -84,37 +73,29 @@ export function useYouTubePlayer(elementId: string, videoId: string, startSecond
     };
   }, [elementId, videoId, startSeconds]);
 
-  function unmute() {
+  function start() {
     const player = playerRef.current;
-    if (!player) return;
+    if (!player || playingRef.current) return;
+    player.seekTo(startSeconds, true);
     player.unMute();
     player.setVolume(70);
-    setMuted(false);
+    player.playVideo();
+    playingRef.current = true;
+    setPlaying(true);
   }
 
-  function toggleMute() {
+  function toggle() {
     const player = playerRef.current;
     if (!player) return;
 
-    if (muted) {
-      unmute();
+    if (playingRef.current) {
+      player.pauseVideo();
+      playingRef.current = false;
+      setPlaying(false);
     } else {
-      player.mute();
-      setMuted(true);
+      start();
     }
   }
 
-  useEffect(() => {
-    if (!ready || !muted) return;
-
-    function handleFirstScroll() {
-      unmute();
-    }
-
-    window.addEventListener('scroll', handleFirstScroll, { once: true, passive: true });
-    return () => window.removeEventListener('scroll', handleFirstScroll);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ready, muted]);
-
-  return { muted, toggleMute, hasTrack: Boolean(videoId) };
+  return { playing, start, toggle, hasTrack: Boolean(videoId) };
 }
