@@ -15,7 +15,7 @@ import { musicConfig } from './data/music';
 import { useYouTubePlayer } from './lib/useYouTubePlayer';
 
 function InvitationCard() {
-  const [opened, setOpened] = useState(false);
+  const [opened, setOpened] = useState(true);
   const { playing, start, toggle, hasTrack } = useYouTubePlayer(
     'bg-music-player',
     musicConfig.youtubeId,

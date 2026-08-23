@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { MapPinIcon, MoonStarIcon } from 'lucide-react';
 import { SectionHeading } from './Ornament';
+import { Butterflies } from './Butterflies';
 import { couple, type Person } from '../data/wedding';
 
 const COUPLE_PHOTO = '/couplepic.jpeg';
@@ -63,12 +64,16 @@ export function CoupleSection() {
         
 
         <figure className="mt-12 flex flex-col items-center">
-          <div className="w-full max-w-xs rounded-md border border-gold/40 bg-cream-deep/90 p-2 shadow-[0_18px_50px_rgba(0,0,0,0.28)]">
-            <img
-              src={COUPLE_PHOTO}
-              alt={`${couple.groom.shortName} and ${couple.bride.shortName}`}
-              className="aspect-[3/4] w-full rounded-sm object-cover" />
+          <div className="relative w-full max-w-xs">
+            <Butterflies layer="back" />
+            <div className="w-full rounded-md border border-gold/40 bg-cream-deep/90 p-2 shadow-[0_18px_50px_rgba(0,0,0,0.28)]">
+              <img
+                src={COUPLE_PHOTO}
+                alt={`${couple.groom.shortName} and ${couple.bride.shortName}`}
+                className="aspect-[3/4] w-full rounded-sm object-cover" />
 
+            </div>
+            <Butterflies layer="front" />
           </div>
           <figcaption className="mt-5 font-script text-2xl text-gold-light">
             {couple.groom.shortName} &amp; {couple.bride.shortName}
