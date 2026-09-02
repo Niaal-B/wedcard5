@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Ornament } from './Ornament';
 import { couple } from '../data/wedding';
 
-const HERO_BG = "/e6212303-96a2-46c8-890e-2941667f6566.jpg";
+const HERO_BG = "/final_image.jpeg";
 
 const rise = {
   hidden: { opacity: 0, y: 16 },
