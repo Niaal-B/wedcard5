@@ -3,21 +3,41 @@ import { motion } from 'framer-motion';
 import { Ornament } from './Ornament';
 import { couple } from '../data/wedding';
 
-const HERO_BG = "/final_image.jpeg";
-
 const rise = {
   hidden: { opacity: 0, y: 16 },
   show: { opacity: 1, y: 0 }
 };
 
-const cornerMask = (position: string): React.CSSProperties => ({
-  objectPosition: position,
-  WebkitMaskImage: 'radial-gradient(circle at ' + position + ', black 45%, transparent 75%)',
-  maskImage: 'radial-gradient(circle at ' + position + ', black 45%, transparent 75%)'
-});
+function CornerGlow({ className }: { className: string }) {
+  return (
+    <span
+      aria-hidden="true"
+      className={`pointer-events-none absolute h-48 w-48 rounded-full bg-gold/10 blur-3xl sm:h-64 sm:w-64 ${className}`} />);
 
-function CornerBracket({ className }: { className: string }) {
-  return <span aria-hidden="true" className={`pointer-events-none absolute h-7 w-7 border-gold/50 sm:h-9 sm:w-9 ${className}`} />;
+}
+
+function CornerFlourish({ className }: { className: string }) {
+  return (
+    <svg
+      viewBox="0 0 100 100"
+      aria-hidden="true"
+      className={`pointer-events-none absolute h-16 w-16 opacity-50 sm:h-20 sm:w-20 ${className}`}>
+
+      <path
+        d="M8 8 C 34 8, 50 8, 50 34 M8 8 C 8 34, 8 50, 34 50"
+        fill="none"
+        stroke="#E3C877"
+        strokeWidth="1" />
+
+      <path
+        d="M8 22 C 20 22, 22 20, 22 8"
+        fill="none"
+        stroke="#E3C877"
+        strokeWidth="1" />
+
+      <circle cx="8" cy="8" r="2.5" fill="#E3C877" />
+    </svg>);
+
 }
 
 function ArchMotif() {
@@ -50,41 +70,21 @@ export function Hero() {
       aria-label="Wedding invitation"
       className="emerald-weave relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-emerald-night">
 
-      <img
-        src={HERO_BG}
-        alt=""
-        aria-hidden="true"
-        style={cornerMask('top left')}
-        className="pointer-events-none absolute left-0 top-0 h-28 w-28 object-cover opacity-80 sm:h-40 sm:w-40 md:h-56 md:w-56" />
-      <img
-        src={HERO_BG}
-        alt=""
-        aria-hidden="true"
-        style={cornerMask('top right')}
-        className="pointer-events-none absolute right-0 top-0 h-28 w-28 object-cover opacity-80 sm:h-40 sm:w-40 md:h-56 md:w-56" />
-      <img
-        src={HERO_BG}
-        alt=""
-        aria-hidden="true"
-        style={cornerMask('bottom left')}
-        className="pointer-events-none absolute bottom-0 left-0 h-28 w-28 object-cover opacity-80 sm:h-40 sm:w-40 md:h-56 md:w-56" />
-      <img
-        src={HERO_BG}
-        alt=""
-        aria-hidden="true"
-        style={cornerMask('bottom right')}
-        className="pointer-events-none absolute bottom-0 right-0 h-28 w-28 object-cover opacity-80 sm:h-40 sm:w-40 md:h-56 md:w-56" />
+      <CornerGlow className="-left-16 -top-16" />
+      <CornerGlow className="-right-16 -top-16" />
+      <CornerGlow className="-bottom-16 -left-16" />
+      <CornerGlow className="-bottom-16 -right-16" />
+
+      <CornerFlourish className="left-5 top-5 sm:left-7 sm:top-7" />
+      <CornerFlourish className="right-5 top-5 -scale-x-100 sm:right-7 sm:top-7" />
+      <CornerFlourish className="bottom-5 left-5 -scale-y-100 sm:bottom-7 sm:left-7" />
+      <CornerFlourish className="bottom-5 right-5 -scale-x-100 -scale-y-100 sm:bottom-7 sm:right-7" />
 
       <div
         className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(4,44,25,0.15)_0%,rgba(4,44,25,0.45)_75%,rgba(4,44,25,0.7)_100%)]"
         aria-hidden="true" />
 
       <ArchMotif />
-
-      <CornerBracket className="left-5 top-5 border-l border-t sm:left-7 sm:top-7" />
-      <CornerBracket className="right-5 top-5 border-r border-t sm:right-7 sm:top-7" />
-      <CornerBracket className="bottom-5 left-5 border-b border-l sm:bottom-7 sm:left-7" />
-      <CornerBracket className="bottom-5 right-5 border-b border-r sm:bottom-7 sm:right-7" />
 
       <motion.div
         initial="hidden"
